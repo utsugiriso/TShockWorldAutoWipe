@@ -125,4 +125,4 @@ if ($wipe) {
 # サーバー起動
 ################################
 Set-Location -Path $tshockDirPath
-Start-Process -FilePath TerrariaServer.exe -ArgumentList "-world `"$($worldFileName)`""
+Start-Process -FilePath TerrariaServer.exe -ArgumentList "-world `"$($worldPath)`""
