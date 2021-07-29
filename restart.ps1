@@ -82,15 +82,16 @@ $dateString = Get-Date -UFormat "%Y-%m-%d %H-%M-%S"
 # DB
 if (![string]::IsNullOrEmpty($sqlitePath) -and ![string]::IsNullOrEmpty($sqliteBackupDirPath)) {
     $sqliteBackupPath = Join-Path $sqliteBackupDirPath $dateString
-    New-Item $sqliteBackupPath -ItemType Directory
+    New-Item $sqliteBackupPath -ItemType Directory -Force
     Write-Output "copy $($sqlitePath) to $($sqliteBackupPath)"
     Copy-Item $sqlitePath $sqliteBackupPath
 }
 
+# World
 $worldFileName = "$($worldName).wld"
 $worldPath = Join-Path $worldDirPath $worldFileName
 $worldBackupPath = Join-Path  $worldBackupDirPath $dateString
-New-Item $worldBackupPath -ItemType Directory
+New-Item $worldBackupPath -ItemType Directory -Force
 if ($wipe) {
     Write-Output "move $($worldPath) to $($worldBackupPath)"
     Move-Item $worldPath $worldBackupPath
@@ -100,6 +101,12 @@ else {
     Copy-Item $worldPath $worldBackupPath
 }
 
+# logs
+$logsPath = [IO.Path]::Combine($tshockDirPath, "tshock", "*.log")
+$logsBackupDirName = "$($worldName)_logs"
+$logsBackupDirPath = Join-Path  $worldBackupPath $logsBackupDirName
+Write-Output "move $($logsPath) to $($logsBackupDirPath)"
+Move-Item $logsPath $logsBackupDirPath
 
 ################################
 # ワールド再作成
